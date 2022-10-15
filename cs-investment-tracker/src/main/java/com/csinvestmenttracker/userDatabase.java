@@ -99,8 +99,6 @@ public class userDatabase {
         try {
             parsed = (JSONObject)parser.parse(new FileReader("users.json"));
 
-            System.out.println(parsed);
-
             return parsed;
 
         } catch (IOException | ParseException e) {
