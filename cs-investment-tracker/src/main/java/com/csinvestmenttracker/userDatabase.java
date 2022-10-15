@@ -26,23 +26,16 @@ public class userDatabase {
 
         userDatabase u = new userDatabase();
         
-        try {
-            u.load();
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
+        u.addBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Danger%20Zone%20Case", "500", "0.10");
 
     }
 
-    public JSONArray create() {
+    public JSONObject create(String UID) {
 
-        JSONArray users = new JSONArray();
-        JSONObject user = new JSONObject();
-
-        JSONArray boxes = new JSONArray();
+        JSONObject users = new JSONObject();
         JSONObject box = new JSONObject();
 
-        user.put("UID", "1");
+        JSONArray boxes = new JSONArray();
 
         box.put("url", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case");
         box.put("pcs", "500");
@@ -50,26 +43,67 @@ public class userDatabase {
 
         boxes.add(box);
 
-        user.put("cases", boxes);
-
-        users.add(user);
+        users.put(UID, boxes);
 
         return users;
 
     }
 
-    public JSONArray load() throws ParseException, FileNotFoundException, IOException {
-        
-        JSONParser parser = new JSONParser();
-        JSONArray parsed = (JSONArray)parser.parse(new FileReader("users.json"));
+    public void addUser(String UID) {
 
-        System.out.println(parsed);
+        JSONObject users = load();
+        if(users == null){
+            System.out.println("Error with parsing");
+            return;
+        }
 
-        return parsed;
+        JSONArray boxes = new JSONArray();
+
+        users.put(UID, boxes);
+
+        save(users);
 
     }
 
-    public void save(JSONArray toSave) {
+    public void addBox(String UID, String url, String pcs, String price) {
+
+        JSONObject users = load();
+        if(users == null){
+            System.out.println("Error with parsing");
+            return;
+        }
+
+        JSONObject box = new JSONObject();
+        box.put("url", url);
+        box.put("pcs", pcs);
+        box.put("price", price);
+
+        JSONArray boxes = (JSONArray)users.get(UID);
+
+        boxes.add(box);
+
+        save(users);
+    }
+
+    public JSONObject load() {
+        
+        JSONParser parser = new JSONParser();
+        JSONObject parsed;
+        try {
+            parsed = (JSONObject)parser.parse(new FileReader("users.json"));
+
+            System.out.println(parsed);
+
+            return parsed;
+
+        } catch (IOException | ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void save(JSONObject toSave) {
 
         try {
             FileWriter fw = new FileWriter("users.json");

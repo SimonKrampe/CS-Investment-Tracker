@@ -35,12 +35,24 @@ public class fetch {
 
     }
 
+    public String[] getAll(String link) throws ParseException {
+
+        JSONObject steamContent = fetchContent(link);
+
+        String[] data = new String[2];
+        data[0] = (String)steamContent.get("lowest_price");
+        data[1] = (String)steamContent.get("volume");
+        
+        return data;
+    }
+
     public String price(String link) throws ParseException {
 
         JSONObject steamContent = fetchContent(link);
 
         String price = (String)steamContent.get("lowest_price");
         System.out.println(price);
+
         return price;
     }
 
