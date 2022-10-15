@@ -54,9 +54,12 @@ public class comparePrices {
         double priceNew = Double.valueOf(data[0]) * Double.valueOf((String)box.get("pcs"));
         double difference = priceNew - priceOld;
 
-        System.out.println("Price you bought at: "+priceOld);
-        System.out.println("Price now: "+priceNew);
-        System.out.println("Profit: "+difference);
+        String[] temp = url.split("=");
+        String name = temp[3];
+        name = name.replace("%20", " ");
+
+        String output = name + ": " + difference + " (" + priceOld + ", " + priceNew + ")";
+        System.out.println(output);
 
         return difference;
     }
