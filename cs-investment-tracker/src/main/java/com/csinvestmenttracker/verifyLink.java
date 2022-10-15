@@ -10,8 +10,6 @@ public class verifyLink {
 
     }
 
-    public verifyLink(){}
-
     public String check(String input) {
 
         if(input.contains("https://")) {

@@ -14,11 +14,35 @@ public class comparePrices {
         
         comparePrices c = new comparePrices();
 
-        c.allBoxes("1");
+        c.everything("1");
 
     }
 
-    public void allBoxes(String UID) {
+    public double everything(String UID) {
+
+        double profit = allBoxes(UID) + allPastBoxes(UID);
+        System.out.println("Profit overall: "+ profit);
+
+        return profit;
+    }
+
+    public double allPastBoxes(String UID) {
+
+        JSONArray boxes = u.getUserPast(UID);
+
+        double totalDifference = 0;
+
+        for(int i = 0; i < boxes.size(); i++) {
+
+            totalDifference = totalDifference + pastBox(boxes, i);
+
+        }
+        System.out.println("Total past Profit: " + totalDifference);
+        return totalDifference;
+
+    }
+
+    public double allBoxes(String UID) {
 
         JSONArray boxes = u.getUser(UID);
 
@@ -27,7 +51,7 @@ public class comparePrices {
         for(int i = 0; i < boxes.size(); i++) {
 
             try {
-                totalDifference = totalDifference + specificBox(boxes, UID, i);
+                totalDifference = totalDifference + specificBox(boxes, i);
             } catch (ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -35,11 +59,32 @@ public class comparePrices {
 
         }
 
-        System.out.println("Total Profit: "+totalDifference);
+        System.out.println("Total current Profit: "+totalDifference);
+        return totalDifference;
 
     }
 
-    public double specificBox(JSONArray boxes, String UID, int i) throws ParseException {
+    public double pastBox(JSONArray boxes, int i) {
+
+        JSONObject box = (JSONObject)boxes.get(i);
+        int pcs = Integer.valueOf((String)box.get("pcs"));
+        double price = Double.valueOf((String)box.get("price")) * pcs;
+        double sellPrice = Double.valueOf((String)box.get("sellPrice")) * pcs;
+        double difference = sellPrice - price;
+
+        String url = (String)box.get("url");
+
+        String[] temp = url.split("=");
+        String name = temp[3];
+        name = name.replace("%20", " ");
+
+        String output = name + ": " + difference + " (" + price + ", " + sellPrice + ")";
+        System.out.println(output);
+
+        return difference;
+    }
+
+    public double specificBox(JSONArray boxes, int i) throws ParseException {
 
         JSONObject box = (JSONObject)boxes.get(i);
 

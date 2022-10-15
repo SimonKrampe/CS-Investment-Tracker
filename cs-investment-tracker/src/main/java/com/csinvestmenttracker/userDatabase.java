@@ -1,17 +1,11 @@
 package com.csinvestmenttracker;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.rmi.server.UID;
-
-import javax.json.JsonObject;
-import javax.servlet.jsp.tagext.BodyContent;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -21,13 +15,77 @@ public class userDatabase {
 
         userDatabase u = new userDatabase();
         
-        u.addBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Danger%20Zone%20Case", "500", "0.10");
+        //u.addUser("1");
+        //u.addBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case", "500", "0.03");
+        //u.removeBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case", "0.7");
+
+    }
+
+    public void removeFromSold(String UID, String url) {
+
+        JSONObject users = load("pastTrades.json");
+        if(users == null){
+            System.out.println("Error with parsing");
+            return;
+        }
+
+        JSONObject box = new JSONObject();
+
+        JSONArray boxes = (JSONArray)users.get(UID);
+        for(int i = 0; i < boxes.size(); i++) {
+
+            box = (JSONObject)boxes.get(i);
+
+            if(box.get("url") == url) {
+
+                boxes.remove(i);
+                i = boxes.size();
+
+            }
+
+        }
+
+        save(users, "pastTrades.json");
+
+    }
+
+    public void removeBox(String UID, String url, String sellPrice) {
+
+        JSONObject users = load("users.json");
+        if(users == null){
+            System.out.println("Error with parsing");
+            return;
+        }
+
+        JSONObject box = new JSONObject();
+
+        JSONArray boxes = (JSONArray)users.get(UID);
+        for(int i = 0; i < boxes.size(); i++) {
+
+            box = (JSONObject)boxes.get(i);
+
+            if(box.get("url") == url) {
+
+                boxes.remove(i);
+                i = boxes.size();
+
+            }
+
+        }
+        JSONObject pastTrades = load("pastTrades.json");
+        JSONArray oldBoxes = (JSONArray)pastTrades.get(UID);
+
+        box.put("sellPrice", sellPrice);
+        oldBoxes.add(box);
+
+        save(pastTrades, "pastTrades.json");
+        save(users, "users.json");
 
     }
 
     public JSONArray getUser(String UID) {
         
-        JSONObject users = load();
+        JSONObject users = load("users.json");
         if(users == null){
             System.out.println("Error with parsing");
             return null;
@@ -37,6 +95,19 @@ public class userDatabase {
         return boxes;
     }
 
+    public JSONArray getUserPast(String UID) {
+
+        JSONObject users = load("pastTrades.json");
+        if(users == null){
+            System.out.println("Error with parsing");
+            return null;
+        }
+
+        JSONArray boxes = (JSONArray)users.get(UID);
+        return boxes;
+
+    }
+
     public JSONObject create(String UID) {
 
         JSONObject users = new JSONObject();
@@ -44,8 +115,8 @@ public class userDatabase {
 
         JSONArray boxes = new JSONArray();
 
-        box.put("url", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case");
-        box.put("pcs", "500");
+        box.put("url", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Prisma%202%20Case");
+        box.put("pcs", "1000");
         box.put("price", "0.03");
 
         boxes.add(box);
@@ -58,7 +129,7 @@ public class userDatabase {
 
     public void addUser(String UID) {
 
-        JSONObject users = load();
+        JSONObject users = load("users.json");
         if(users == null){
             System.out.println("Error with parsing");
             return;
@@ -68,13 +139,14 @@ public class userDatabase {
 
         users.put(UID, boxes);
 
-        save(users);
+        save(users, "users.json");
+        save(users, "pastTrades.json");
 
     }
 
     public void addBox(String UID, String url, String pcs, String price) {
 
-        JSONObject users = load();
+        JSONObject users = load("users.json");
         if(users == null){
             System.out.println("Error with parsing");
             return;
@@ -89,15 +161,15 @@ public class userDatabase {
 
         boxes.add(box);
 
-        save(users);
+        save(users, "users.json");
     }
 
-    public JSONObject load() {
+    public JSONObject load(String fileName) {
         
         JSONParser parser = new JSONParser();
         JSONObject parsed;
         try {
-            parsed = (JSONObject)parser.parse(new FileReader("users.json"));
+            parsed = (JSONObject)parser.parse(new FileReader(fileName));
 
             return parsed;
 
@@ -108,10 +180,10 @@ public class userDatabase {
         return null;
     }
 
-    public void save(JSONObject toSave) {
+    public void save(JSONObject toSave, String fileName) {
 
         try {
-            FileWriter fw = new FileWriter("users.json");
+            FileWriter fw = new FileWriter(fileName);
             fw.write(toSave.toJSONString());
             fw.close();
         } catch (Exception e) {
