@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.rmi.server.UID;
 
 import javax.json.JsonObject;
+import javax.servlet.jsp.tagext.BodyContent;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,18 +17,24 @@ import org.json.simple.parser.ParseException;
 
 public class userDatabase {
 
-    public userDatabase() {
-
-
-
-    }
-
     public static void main(String[] args) {
 
         userDatabase u = new userDatabase();
         
         u.addBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Danger%20Zone%20Case", "500", "0.10");
 
+    }
+
+    public JSONArray getUser(String UID) {
+        
+        JSONObject users = load();
+        if(users == null){
+            System.out.println("Error with parsing");
+            return null;
+        }
+
+        JSONArray boxes = (JSONArray)users.get(UID);
+        return boxes;
     }
 
     public JSONObject create(String UID) {

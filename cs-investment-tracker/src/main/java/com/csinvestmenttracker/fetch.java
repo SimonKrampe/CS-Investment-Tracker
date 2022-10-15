@@ -21,7 +21,7 @@ public class fetch {
         // "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Danger%20Zone%20Case"
 
         try {
-            g.price("https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Danger%20Zone%20Case");
+            g.price("https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case");
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -35,14 +35,14 @@ public class fetch {
 
     }
 
-    public String[] getAll(String link) throws ParseException {
+    public String[] all(String link) throws ParseException {
 
         JSONObject steamContent = fetchContent(link);
 
         String[] data = new String[2];
         data[0] = (String)steamContent.get("lowest_price");
         data[1] = (String)steamContent.get("volume");
-        
+
         return data;
     }
 
