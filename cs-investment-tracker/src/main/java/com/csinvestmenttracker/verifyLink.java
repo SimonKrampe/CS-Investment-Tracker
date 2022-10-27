@@ -9,7 +9,7 @@ public class verifyLink {
         g.check("https://steamcommunity.com/market/listings/730/2020%20RMR%20Contenders");
 
     }
-
+    /**Main method to call. Checks if user input is a link or just a name. Does not check if link or name is funktional! */
     public String check(String input) {
 
         if(input.contains("https://")) {
@@ -21,7 +21,7 @@ public class verifyLink {
         System.out.println(input);
         return input;
     }
-
+    
     public String fromLink(String input) {
 
         String[] s;

@@ -9,6 +9,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * This class keeps track of all users. It is capable of creating new users, adding new boxes to them and removing them.
+ * It also saves a JSON with all user data and can load it aswell.
+ */
 public class userDatabase {
 
     public static void main(String[] args) {
@@ -20,9 +24,12 @@ public class userDatabase {
         //u.removeBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case", "0.7");
 
     }
-
+    /**
+     * Completely removes a box that has been moved to the file with past trades (sold) 
+     * @param url URL of the box to remove
+     */
     public void removeFromSold(String UID, String url) {
-
+        
         JSONObject users = load("pastTrades.json");
         if(users == null){
             System.out.println("Error with parsing");
@@ -48,7 +55,11 @@ public class userDatabase {
         save(users, "pastTrades.json");
 
     }
-
+    /**
+     * Removes a box from a user and saves it along with the sell price in another file. 
+     * @param url URL of the box to remove
+     * @param sellPrice Price the boxes were sold at
+     */
     public void removeBox(String UID, String url, String sellPrice) {
 
         JSONObject users = load("users.json");
@@ -82,7 +93,10 @@ public class userDatabase {
         save(users, "users.json");
 
     }
-
+    /**
+     * Loads a user from the regular database. 
+     * @return The array with all boxes of specific user. 
+     */
     public JSONArray getUser(String UID) {
         
         JSONObject users = load("users.json");
@@ -94,7 +108,10 @@ public class userDatabase {
         JSONArray boxes = (JSONArray)users.get(UID);
         return boxes;
     }
-
+    /**
+     * Loads a user from the database containing sold boxes. 
+     * @return The array with all boxes of specific user. 
+     */
     public JSONArray getUserPast(String UID) {
 
         JSONObject users = load("pastTrades.json");
@@ -107,7 +124,7 @@ public class userDatabase {
         return boxes;
 
     }
-
+    /**Creates a test user with a box along with an empty database. ONLY TEST PURPOSES! */
     public JSONObject create(String UID) {
 
         JSONObject users = new JSONObject();
@@ -126,7 +143,10 @@ public class userDatabase {
         return users;
 
     }
-
+    /**
+     * Adds a user to the regular database and the one for past trades.
+     * @param UID Unique ID of the user
+     */
     public void addUser(String UID) {
 
         JSONObject users = load("users.json");
@@ -143,7 +163,13 @@ public class userDatabase {
         save(users, "pastTrades.json");
 
     }
-
+    /**
+     * Adds a box to a given user 
+     * @param UID Unique ID of the user
+     * @param url Hash url of the box to add
+     * @param pcs How many boxes were bought
+     * @param price At wich price the boxes were bougth
+     */
     public void addBox(String UID, String url, String pcs, String price) {
 
         JSONObject users = load("users.json");
@@ -163,7 +189,11 @@ public class userDatabase {
 
         save(users, "users.json");
     }
-
+    /**
+     * Loads the given JSON File.
+     * @param fileName Name of the file to load. ("users.json", "pastTrades.json")
+     * @return Returns JSONObject
+     */
     public JSONObject load(String fileName) {
         
         JSONParser parser = new JSONParser();
@@ -179,7 +209,11 @@ public class userDatabase {
         }
         return null;
     }
-
+    /**
+     * Saves a JSONObject as a JSON File with the given Name 
+     * @param toSave JSONObject to save
+     * @param fileName Name the JSONObject will be saved as. ("users.json", "pastTrades.json")
+     */
     public void save(JSONObject toSave, String fileName) {
 
         try {
