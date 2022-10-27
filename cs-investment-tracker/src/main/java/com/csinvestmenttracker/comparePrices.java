@@ -18,7 +18,6 @@ public class comparePrices {
         comparePrices c = new comparePrices();
         userDatabase u = new userDatabase();
 
-        c.allBoxes(u.getUser("1"));
 
     }
     /**
