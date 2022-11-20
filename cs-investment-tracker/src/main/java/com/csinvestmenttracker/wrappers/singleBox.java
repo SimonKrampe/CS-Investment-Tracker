@@ -15,6 +15,7 @@ public class singleBox {
         name = pName;
         oldPrice = pOldPrice;
         newPrice = pNewPrice;
+        pcs = pPcs;
 
         difference = pDifference;
 

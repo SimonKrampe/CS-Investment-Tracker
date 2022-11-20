@@ -18,10 +18,10 @@ public class userDatabase {
     public static void main(String[] args) {
 
         userDatabase u = new userDatabase();
-        
+
         //u.addUser("1");
-        //u.addBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case", "500", "0.03");
-        //u.removeBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case", "0.7");
+        //u.addBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Clutch%20Case", "500", "0.03");
+        u.removeBox("1", "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case", "1");
 
     }
     /**
@@ -44,7 +44,7 @@ public class userDatabase {
             box = (JSONObject)boxes.get(i);
 
             if(box.get("url") == url) {
-
+                
                 boxes.remove(i);
                 i = boxes.size();
 
@@ -74,12 +74,12 @@ public class userDatabase {
         for(int i = 0; i < boxes.size(); i++) {
 
             box = (JSONObject)boxes.get(i);
+            System.out.println(box.get("url"));
 
-            if(box.get("url") == url) {
-
+            if(box.get("url").equals(url)) {
                 boxes.remove(i);
                 i = boxes.size();
-
+                break;
             }
 
         }

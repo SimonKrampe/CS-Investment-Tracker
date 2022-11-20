@@ -18,6 +18,14 @@ public class comparePrices {
         comparePrices c = new comparePrices();
         userDatabase u = new userDatabase();
 
+        JSONArray user = u.getUser("1");
+
+        try {
+            System.out.println(c.currentBox(user, 0).getPcs());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
     /**
@@ -42,7 +50,6 @@ public class comparePrices {
             totalDifference = totalDifference + past.getDifference();
             totalPcs = totalPcs + past.getPcs();
         }
-
         boxesAccumulated ba = new boxesAccumulated(pastBoxes, allNames, totalPrice, totalSellPrice, totalDifference, totalPcs);
         return ba;
 
