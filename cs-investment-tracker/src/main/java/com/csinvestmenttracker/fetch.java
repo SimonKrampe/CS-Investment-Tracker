@@ -23,12 +23,6 @@ public class fetch {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        try {
-            g.volume("https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Danger%20Zone%20Case");
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
     }
 
@@ -63,7 +57,7 @@ public class fetch {
 
         String price = (String)steamContent.get("lowest_price");
         price = price.replace("-", "0");
-        price = price.substring(0, price.length()-3);
+        price = price.replace("\u20AC", "");
         price = price.replace(',', '.');
         System.out.println(price);
        
