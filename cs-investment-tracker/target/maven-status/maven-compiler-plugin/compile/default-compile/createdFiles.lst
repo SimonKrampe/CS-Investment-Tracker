@@ -1,0 +1,6 @@
+com\csinvestmenttracker\wrappers\singleBox.class
+com\csinvestmenttracker\userDatabase.class
+com\csinvestmenttracker\verifyLink.class
+com\csinvestmenttracker\wrappers\boxesAccumulated.class
+com\csinvestmenttracker\comparePrices.class
+com\csinvestmenttracker\fetch.class

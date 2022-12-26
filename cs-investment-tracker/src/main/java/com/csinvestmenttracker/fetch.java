@@ -18,7 +18,7 @@ public class fetch {
         // "https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Danger%20Zone%20Case"
 
         try {
-            g.price("https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case");
+            g.all("https://steamcommunity.com/market/priceoverview/?appid=730&currency=3&market_hash_name=Gamma%202%20Case");
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class fetch {
         data[1] = (String)steamContent.get("volume");
 
         data[0] = data[0].replace("-", "0");
-        data[0] = data[0].substring(0, data[0].length()-3);
+        data[0] = data[0].replace("\u20AC", "");
         data[0] = data[0].replace(',', '.');
 
         return data;

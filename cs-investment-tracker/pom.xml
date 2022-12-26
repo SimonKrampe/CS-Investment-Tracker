@@ -4,7 +4,7 @@
 
     <groupId>com.SimonKrampe.csinvestmenttracker</groupId>
     <artifactId>cs-investment-tracker</artifactId>
-    <version>v0.0.5</version>
+    <version>v0.0.6</version>
     <packaging>jar</packaging>
 
     <properties>
